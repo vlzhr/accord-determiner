@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Admin Panel</title>
+</head>
+<body>
+	<section>
+		{% for ui in dic %}
+			<strong>{{ui}}</strong><br>
+			{% for to in dic[ui] %}
+				{{to}}: {{dic[ui][to]}}, <a href="/delvip?ui={{ui}}&to={{to}}">удалить</a><br>
+			{% endfor %}
+			<br>
+			<form action="add_vip">Добавить любовь: <input type="text" name="to" placeholder="К кому">
+			<input type="text" name="val" placeholder="Значение в виде дес. дроби">
+			<input style="display: none" type="text" name="ui" value="{{ui}}">
+			<button>Отправить</button>
+			</form>
+			<br>
+			<br>
+		{% endfor %}
+		<br><br>
+		<form action="new_vip">Добавить персону ВИП: <input type="text" name="ui" placeholder="USER ID"></form>
+		<br>
+		<br>
+		<br>
+		<a href="/logout">Выйти</a>
+	</section>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>You are welcome!</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic-ext" rel="stylesheet">
+	<style>
+		body * {
+			font-size: 20px;
+			font-family: 'Open Sans' sans-serif;
+		}
+		h1 {
+			font-size: 27px;
+		}
+		section {
+			position: absolute;
+			left: 20%;
+			right: 20%;
+		}
+		div {
+			width: 40%;
+			float: left;
+		}
+		#vk_auth {
+			float: right;
+		}
+		input {
+			padding: 10px;
+			border-radius: 6px;
+		}
+		@media only screen and (max-device-width: 480px) {
+			section {
+				left: 5%;
+				right: 5%;
+			}
+			body * {
+				font-size: 40px;
+			}
+			#vk_auth {
+				clear: both;
+				font-size: 40px;
+			}
+			body {
+				
+			}
+		}
+	</style>
+
+
+
+	<!-- VK AUTH -->
+<script type="text/javascript" src="https://vk.com/js/api/openapi.js?139"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+  VK.init({apiId: 5847252});
+</script>
+
+</head>
+<body>
+	<section>
+		<h1>Добро пожаловать в Check your Accord!</h1>
+		<p>
+			Здесь Вы можете проверить свою совместимость с друзьями, а также совместимость друзей с их друзьями!<br>
+			Для начала введите ссылку на Ваш профиль <a href="http://vk.com/id0" target="vk">vk.com</a> или авторизуйтесь с помощью окошечка (ввод пароля не потребуется).
+		</p>
+		<br>
+		<hr>
+		<div>
+		<form action="auth">
+			<input type="text" name="link" placeholder="vk.com/ihavebeenhere">
+			<br><br>
+			<input type="submit" value="Начать!">
+		</form>
+		</div>
+
+		<!-- VK AUTH -->
+		<div id="vk_auth" ></div>
+		<script type="text/javascript">
+			if (window.innerWidth > 480) {
+				VK.Widgets.Auth("vk_auth", {width: "260px", authUrl: '/vkauth'});
+			}
+			else {
+				VK.Widgets.Auth("vk_auth", {width: "500px", authUrl: '/vkauth'});
+			}
+		
+		</script>
+
+	</section>
+</body>
+</html>

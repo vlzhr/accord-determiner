@@ -15,16 +15,17 @@ def load_user(vklink):
     except AttributeError:
         return vk.method('users.get', {'fields': 'sex,bdate', 'user_ids': vklink})[0]
 
-def determine(vklink1="ihavebeenhere", vklink2="id342941908"):
+def determine(user, vklink2="id342941908"):
     """ Return {"videos", "groups"} """
     dic = {}
     try:
-        users = [load_user(vklink1), load_user(vklink2)]
+        users = [user, load_user(vklink2)]
         dic['groups'] = get_groups_accord(users)
         dic['videos'] = get_videos_accord(users, True)
     except ApiError:
-        dic['groups'] = {'count': 0}
-        dic['videos'] = 0
+        return {'general': 0, 'videos': {'count': 0, 'dic': {}},
+                'groups': {'count': 0, 'li': []}, 'horo': {'text': u'Пользователь удален. Видимо, не судьба..'}}
+
     dic['user'] = users[1]
     add_req(users[0], users[1])
     
@@ -32,7 +33,7 @@ def determine(vklink1="ihavebeenhere", vklink2="id342941908"):
 
     vip_val = get_vips(users[0]['id']).get(str(users[1]['id']), 0)
     if vip_val == 0:
-        dic['general'] = (dic['groups']['count']*3 + dic['videos']['count']) / 4
+        dic['general'] = (dic['groups']['count']*2 + dic['videos']['count']) / 3
     else:
         dic['general'] = vip_val
     return dic

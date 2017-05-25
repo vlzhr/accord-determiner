@@ -4,7 +4,7 @@ import re
 
 def get_horo_text(vk, users):#wom=[u"Полина", u"Полины", u"Полине"], man=[u"Владимир", u"Владимира", u"Владимиру"], wom_date="10.12", man_date="3.12", wom_year='1998', man_year='1998'):
     if not ('bdate' in users[0] and 'bdate' in users[1]):
-        return u'У этих умников не стоят даты рождения в вк'
+        return u'У пользователя не стоит дата рождения в вк :('
 
     users.sort(key = lambda x: x[u'sex'])
     wom, wom_date = [users[0]['first_name']], '.'.join(users[0]['bdate'].split('.')[:2])

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Запрос даты рождения</title>
+	<style>
+		section {
+			position: absolute;
+			left: 20%;
+			right: 20%;
+		}
+		@media only screen and (max-device-width: 480px) {
+			section {
+				left: 5%;
+				right: 5%;
+			}
+			body * {
+				font-size: 50px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<h2>Введите дату рождения</h2>
+		<p>Для коректной оценки Вашей личности с астрономиечской точки зрения алгоритму необходима правдивая информация о Вашей дате рождения</p>
+		<form action="/add_bdate">
+			<select name="day" id="">
+				<option value="1" selected="selected">1</option>
+				{% for n in range(2, 32) %}
+					<option value="{{n}}">{{n}}</option>
+				{% endfor %}
+			</select>
+			<select name="month" id="">
+				{% for n, m in enumerate(months) %}
+					<option value="{{n+1}}">{{m}}</option>
+				{% endfor %}
+			</select>
+			<select name="year" id="">
+				{% for n in range(1960, 2012) %}
+					<option value="{{n}}">{{n}}</option>
+				{% endfor %}
+			</select>
+			<input type="submit">
+		</form>
+	</section>
+</body>
+</html>

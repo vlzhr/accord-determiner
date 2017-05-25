@@ -15,10 +15,17 @@ def get_accord(ui1, ui2):
 
 app = Flask(__name__)
 app.debug = True
-app.secret_key = "j"
+app.secret_key = "habnsfdj"
+
+months = ["Jan", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
 
 @app.route("/")
 def index():
+    try:
+        del session['user']
+    except KeyError:
+        pass
     return render_template("index.html")
 
 @app.route("/auth")
@@ -33,20 +40,29 @@ def vkauth():
 
 @app.route("/<screen_name>")
 def desktop(screen_name):
-    try:
-        user = vk.method('users.get', {'user_ids': screen_name, 'fields': 'sex', 'name_case': 'gen'})[0]
-    except ApiError:
-        return u"Такой профиль не найден :( <a href='/'>Назад</a>"
-    session['user'] = user
+    if not 'user' in session:
+        try:
+            user = vk.method('users.get', {'user_ids': screen_name, 'fields': 'sex,bdate'})[0]
+        except ApiError:
+            return u"Такой профиль не найден :( <a href='/'>Назад</a>"
+        session['user'] = user
+        if not 'bdate' in session['user']:
+            return render_template("bdate_ask.html", enumerate=enumerate, months=months, range=range)
+    user = session['user']
     friends = vk.method('friends.get', {'user_id': user['id'], 'fields': 'sex,photo_200'})['items']
     partners = [n for n in friends if (not 'deactivated' in n) and (not n['sex'] == user['sex'])]
-    partners.sort(key = lambda x: x['last_name'][0])
+    partners.sort(key = lambda x: x['first_name'][0])
     add_log(user)
     return render_template('desktop.html', user=user, li=partners)
 
+@app.route("/new/<name>")
+def new(name):
+    del session['user']
+    return redirect('/'+name)
+
 @app.route("/get_accord")
 def getaccord():
-    return jsonify(get_accord(session['user']['id'], request.args['ui']))
+    return jsonify(get_accord(session['user'], request.args['ui']))
 
 @app.route("/admin")
 def admin():
@@ -87,6 +103,16 @@ def login():
 def logout():
     del session['password']
     return redirect("/")
+
+@app.route("/get_htext")
+def get_htext():
+    pass
+
+@app.route("/add_bdate")
+def add_bdate():
+    ra = request.args
+    session['user']['bdate'] = ra['day']+'.'+ra['month']+'.'+ra['year']
+    return redirect('/'+str(session['user']['id']))
 
 if __name__ == "__main__":
     app.run('127.0.0.1', 80)

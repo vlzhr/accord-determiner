@@ -123,7 +123,7 @@
 				margin: 25px 0px;
 			}
 			#hideBut {
-				top: 115px;
+				top: 132px;
 				right: 80px;
 				width: 55px;
 			}
@@ -158,16 +158,16 @@
 			if ("horoscope" in dic) {
 				text += "Гороскоп: " + String(dic['horoscope']*100).slice(0, 4) + "%<br>"
 			}
-			text += "<br><br><br><br><div><div class='col'>"
+			text += "<br><br><br><br><div><div class='col'><h2>Общее</h2>"
 			for (n in dic['groups']['li']) {
 				text += dic['groups']['li'][n] + '<br>'
 			}
 			/*
 			text += "</div><div class='col'>"*/	
 			for (n in dic['videos']['dic']) {
-				text += "<a href=''>#"+n+dic['videos']['dic'][n]+"</a> "
+				text += "<a href=''>#"+n/*+dic['videos']['dic'][n]*/+"</a> "
 			}
-			text += '</div><div class="col2">'+dic['horo']['text']
+			text += '</div><div class="col2"><h2>Love story</h2>'+dic['horo']['text']
 			text += "</div></div>"
 
 			$("#moreP").html(text)
@@ -194,13 +194,13 @@
 			<h2 id="moreH"></h2>
 			<p id="moreP"></p>
 		</div>
-		<h1>Проверьте совместимость <a href="http://vk.com/id{{user['id']}}" target="vk">{{user['first_name']}}</a> с друзьями</h1>
+		<h1><a href="http://vk.com/id{{user['id']}}" target="vk">{{user['first_name']}}</a>: совместимость с друзьями</h1>
 		<hr>
 		<br><br>
 		<article>
 		{% for n in li %}
 			<div>
-				<p class="leftCol"><a href="id{{n['id']}}">{{n['first_name']}} {{n['last_name']}}</a></p>
+				<p class="leftCol"><a href="/new/id{{n['id']}}">{{n['first_name']}} {{n['last_name']}}</a></p>
 				<p class="rightCol"><button class="more" id="more{{n['id']}}" onclick="show_more({{n['id']}})">+</button><button class="button" id="but{{n['id']}}" onclick="get_accord({{n['id']}})">Check Accord</button></p>
 			</div>
 		{% endfor %}

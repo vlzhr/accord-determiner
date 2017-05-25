@@ -8,7 +8,7 @@ def clean(text):
     li = text.split()
     new = []
     for n in li:
-        if not '.com' in n:
+        if not ('.com' in n or 'http' in n or 'www' in n or len(n) == 1):
             new.append(n)
     return u' '.join(new)
 

@@ -40,7 +40,11 @@ def get_groups_accord(users):
     for n in groups1['items']:
         if n['id'] in [m['id'] for m in groups2['items']]:
             mutual_groups.append(n)
-    return {"count": 1 - (1 - (len(mutual_groups) / mean_count)) ** 8, "li": [m['name'] for m in mutual_groups]}
+    try:
+        return {"count": 1 - (1 - (len(mutual_groups) / mean_count)) ** 8, "li": [m['name'] for m in mutual_groups]}
+    except ZeroDivisionError:
+        return {'count': 0, 'li': []}
+
 
 
 

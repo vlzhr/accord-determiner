@@ -48,7 +48,7 @@ def get_videos_accord(users, need_best=False):
     if mean_count == 0:
         answer = None
     else:
-        answer = (1 - (1 - (len(mutual_lemmas)*2 / mean_count)) ** 5)
+        answer = (1 - (1 - (len(mutual_lemmas)*2 / mean_count)) ** 6)
     if need_best:
         dic = {}
         for n in lemmas1:

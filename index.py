@@ -47,7 +47,7 @@ def desktop(screen_name):
             return u"Такой профиль не найден :( <a href='/'>Назад</a>"
         session['user'] = user
         if not 'bdate' in session['user']:
-            return render_template("bdate_ask.html", enumerate=enumerate, months=months, range=range)
+            return render_template("bdate_ask.html", name= user['first_name']+' '+user['last_name'], enumerate=enumerate, months=months, range=range)
     user = session['user']
     friends = vk.method('friends.get', {'user_id': user['id'], 'fields': 'sex,photo_200'})['items']
     partners = [n for n in friends if (not 'deactivated' in n) and (not n['sex'] == user['sex'])]
@@ -104,9 +104,6 @@ def logout():
     del session['password']
     return redirect("/")
 
-@app.route("/get_htext")
-def get_htext():
-    pass
 
 @app.route("/add_bdate")
 def add_bdate():

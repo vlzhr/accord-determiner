@@ -18,7 +18,7 @@ def get_horo_text(vk, users):#wom=[u"Полина", u"Полины", u"Поли�
     
     uis = ','.join([str(n['id']) for n in users])
     for n, case in enumerate(['gen', 'dat']):
-        li = vk.method('users.get', {'user_ids': uis, 'fields': 'sex', 'name_case': 'dat'})
+        li = vk.method('users.get', {'user_ids': uis, 'fields': 'sex', 'name_case': case})
         li.sort(key = lambda x: x['sex'])
         wom.append(li[0]['first_name'])
         man.append(li[1]['first_name'])

@@ -148,7 +148,7 @@
 		}
 		function show_more(ui) {
 			var dic = dics[ui]
-			text = "<strong><a href='http://vk.com/id" + ui + "'>" + dic['user']['first_name'] + " " + dics[ui]['user']['last_name'] + "</a></strong><br><strong>" + String(dic['general']*100).slice(0, 4) + "%</strong><br><br>"
+			text = "<strong><a target='vk' href='http://vk.com/id" + ui + "'>" + dic['user']['first_name'] + " " + dics[ui]['user']['last_name'] + "</a></strong><br><strong>" + String(dic['general']*100).slice(0, 4) + "%</strong><br><br>"
 			if ("groups" in dic) {
 				text += "Схожесть групп: " + String(dic['groups']['count']*100).slice(0, 4) + "%<br>"
 			}

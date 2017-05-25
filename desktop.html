@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Проверка совместимостей</title>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic-ext" rel="stylesheet">
+	<style>
+		body * {
+			
+			font-family: 'Open Sans' sans-serif;
+		}
+		section {
+			position: absolute;
+			left: 20%;
+			right: 20%;
+		}
+		article {
+			width: 60%;
+		}
+		article div {
+			width: 100%;
+			clear: both;
+		}
+		article p {
+			vertical-align: top;
+			margin: 10px 0px;
+			float: left;
+			position: relative;
+		}
+		button.button {
+			width: 100%;
+		}
+		button {
+			font-size: 14px;
+			padding: 5px;
+			border-radius: 7px;
+			background: none;
+		}
+		a {
+			text-decoration: none;
+		}
+		.leftCol {
+			width: 60%;
+			font-size: 20px;
+		}
+		.rightCol {
+			width: 40%;
+		}
+		button.more {
+			display: none;
+			float: left;
+			width: 17%;
+			padding: 5px;
+		}
+		#moreWindow {
+			max-height: 300px;
+			overflow-y: auto;
+			position: fixed;
+			font-size: 20px;
+			top: 0px;
+			width: 60%;
+			padding: 50px;
+			border: 2px black solid;
+			border-radius: 10px;
+			margin: 100px auto;
+			background: white;
+			visibility: hidden;
+			z-index: 1;
+		}
+		.col, .col2 {
+			float: left;
+			text-align: left;
+			box-sizing: border-box;
+			padding: 5%;
+			width: 33%;
+		}
+		.col2 {
+			width: 67%;
+		}
+		#hideBut {
+			z-index: 1;
+			position: fixed;
+			right: 15px;
+			top: 15px;
+			float: right;
+			clear: both;
+			width: 30px;
+		}
+		#moreP {
+			width: 100%;
+			text-align: center;
+		}
+		@media only screen and (max-device-width: 480px) {
+			section {
+				left: 5%;
+				right: 5%;
+			}
+			body * {
+				
+			}
+			#moreWindow {
+				max-height: 1000px;
+				width: 80%;
+				font-size: 50px;
+			}
+			.col, .col2 {
+				width: 100%;
+			}
+			article {
+				width: 100%;
+			}
+			.leftCol {
+				width: 60%;
+				font-size: 50px;
+			}
+			.rightCol {
+				width: 40%;
+			}
+			.rightCol button {
+				font-size: 40px;
+			}
+			article p {
+				margin: 25px 0px;
+			}
+			#hideBut {
+				top: 132px;
+				right: 80px;
+				width: 55px;
+			}
+		}
+	</style>
+
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script>
+		dics = {}
+		function get_accord(ui) {
+			url = 'get_accord?ui=' + ui
+			$.getJSON(url, function(result){
+				dics[ui] = result
+				general = parseFloat(result["general"])*100
+				$("#but"+ui).text(String(general).slice(0, 4)+"%")
+				general = parseInt(general)
+				$("#but"+ui).css("background", "rgb(" + parseInt(general*2.55) + ", " + parseInt(general*2.55) +", 255")
+				$("#but"+ui).css({"color": "#1C1C1C", "text-align": "center", "width": "65%", "float": "right"})
+				$("#more"+ui).css("display", "block")
+				/*$("#but"+ui).css("background", "rgb(" + parseInt(122-general*1.2) + ", " + parseInt(55+general) +", " + (255-Math.abs(50-general)*5))*/
+			})
+		}
+		function show_more(ui) {
+			var dic = dics[ui]
+			text = "<strong><a target='vk' href='http://vk.com/id" + ui + "'>" + dic['user']['first_name'] + " " + dics[ui]['user']['last_name'] + "</a></strong><br><strong>" + String(dic['general']*100).slice(0, 4) + "%</strong><br><br>"
+			if ("groups" in dic) {
+				text += "Схожесть групп: " + String(dic['groups']['count']*100).slice(0, 4) + "%<br>"
+			}
+			if ("videos" in dic) {
+				text += "Схожесть video: " + String(dic['videos']['count']*100).slice(0, 4) + "%<br>"
+			}
+			if ("horoscope" in dic) {
+				text += "Гороскоп: " + String(dic['horoscope']*100).slice(0, 4) + "%<br>"
+			}
+			text += "<br><br><br><br><div><div class='col'><h2>Общее</h2>"
+			for (n in dic['groups']['li']) {
+				text += dic['groups']['li'][n] + '<br>'
+			}
+			/*
+			text += "</div><div class='col'>"*/	
+			for (n in dic['videos']['dic']) {
+				text += "<a href=''>#"+n/*+dic['videos']['dic'][n]*/+"</a> "
+			}
+			text += '</div><div class="col2"><h2>Love story</h2>'+dic['horo']['text']
+			text += "</div></div>"
+
+			$("#moreP").html(text)
+			$("#moreWindow").css("visibility", "visible")
+		}
+		function hide_more() {
+			$("#moreWindow").css("visibility", "hidden")
+		}
+		window.captureEvents(Event.KEYPRESS)
+		document.onkeypress = function(event) {
+			console.log("hey")
+			event= event||window.event
+			if (event.keyCode == 27) {
+					hide_more()
+				}
+		}
+	</script>
+</head>
+<body>
+	<section>
+		<div id="moreWindow">
+			<div style="padding: 20px" class="closer" onclick="hide_more()"><img id="hideBut" src="http://s1.iconbird.com/ico/0612/GooglePlusInterfaceIcons/w128h1281338911586cross.png" alt=""></div>
+			<br>
+			<h2 id="moreH"></h2>
+			<p id="moreP"></p>
+		</div>
+		<h1><a href="http://vk.com/id{{user['id']}}" target="vk">{{user['first_name']}}</a>: совместимость с друзьями</h1>
+		<hr>
+		<br><br>
+		<article>
+		{% for n in li %}
+			<div>
+				<p class="leftCol"><a href="/new/id{{n['id']}}">{{n['first_name']}} {{n['last_name']}}</a></p>
+				<p class="rightCol"><button class="more" id="more{{n['id']}}" onclick="show_more({{n['id']}})">+</button><button class="button" id="but{{n['id']}}" onclick="get_accord({{n['id']}})">Check Accord</button></p>
+			</div>
+		{% endfor %}
+		</article>
+	</section>
+</body>
+</html>
